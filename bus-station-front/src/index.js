@@ -6,7 +6,12 @@ import  {Container, Navbar, Nav, Button} from "react-bootstrap";
 import Home from './components/Home';
 import {logout} from './services/auth';
 import Login from './components/login/Login';
-
+import Line from './components/line/Line';
+import AddLine from './components/line/AddLine';
+import { Provider } from "react-redux";
+import { createStore, applyMiddleware } from "redux";
+import thunk from 'redux-thunk';
+import reducers from './reducers';
 
 class App extends React.Component{
     render() {
@@ -18,6 +23,7 @@ class App extends React.Component{
                             Home
                         </Navbar.Brand>
                         <Nav>
+                            <Nav.Link as={Link} to="/lines">Lines</Nav.Link>
 
                             {window.localStorage['jwt'] ? 
                             <Button onClick = {()=>logout()}>Logout</Button> :
@@ -28,6 +34,8 @@ class App extends React.Component{
                     <Container style={{paddingTop:"25px"}}>
                     <Switch>
                             <Route exact path="/" component={Home} />
+                            <Route exact path="/lines" component={Line} />
+                            <Route exact path="/lines/add" component={AddLine}/>
                             <Route exact path="/login" component={Login}/>
                     </Switch>
                     </Container>
@@ -35,9 +43,14 @@ class App extends React.Component{
             </div>
         )
     }
+
 }
 
+let storeEnhancer = applyMiddleware(thunk);
+
 ReactDOM.render(
-       <App />,
-     document.querySelector("#root")
+ <Provider store={createStore(reducers, storeEnhancer)}>
+    <App />
+  </Provider>,
+  document.querySelector("#root")
 );
