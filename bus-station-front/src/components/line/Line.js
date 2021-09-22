@@ -1,6 +1,6 @@
   
 import React from 'react';
-import {Table, Button, Form} from 'react-bootstrap'
+import {Table, Button, Form, ButtonGroup} from 'react-bootstrap'
 import Axios from '../../apis/Axios';
 import getCompaniesAction from "../../actions/GetCompanies";
 import { connect } from "react-redux";
@@ -106,10 +106,10 @@ class Line extends React.Component {
                     <td>{line.scheduled}</td>
                     <td>{line.destination}</td>
                     <td>{line.companyDTO.name}</td>
-                    <td><button className="btn btn-primary" onClick={() => this.edit(line.id)}>Edit</button></td>
+                    <td><button className="btn btn-primary" onClick={() => this.reservation(line.id)}>Reserve</button></td>
+                    <td><button className="btn btn-warning" onClick={() => this.edit(line.id)}>Edit</button></td>
                     <td><button className="btn btn-danger" onClick={() => this.delete(line.id)}>Delete</button></td>
-                    <td><button className="btn btn-success" onClick={() => this.reservation(line.id)}>Reserve</button></td>
-                </tr>
+                   </tr>
             )
         })
     }
@@ -157,26 +157,27 @@ class Line extends React.Component {
                     <Button style={{ marginTop: "1px" }} className="button btn-primary" onClick={()=>{this.search();}}>Search</Button>
                 </Form>
                 <div>
-                <Table style={{marginTop:30}} className="table table-dark">
-                        <thead>
+                    <ButtonGroup style={{ marginTop: 25, float:"right"}}>
+                        <Button style={{ margin: 3, width: 90}} disabled={this.state.pageNo==0} className="btn btn-primary" onClick={() =>this.getLines(this.state.pageNo = this.state.pageNo - 1)}>Previous</Button>
+                        <Button style={{ margin: 3, width: 90}} disabled={this.state.pageNo==this.state.totalPages-1} className="btn btn-primary" onClick={() =>this.getLines(this.state.pageNo = this.state.pageNo + 1)}>Next</Button>
+                    </ButtonGroup>
+                </div>
+                <div>
+                <Table bordered striped style={{ marginTop: 5 }}>
+                        <thead className="thead-dark">
                             <tr>
                                 <th>Available seats</th>
                                 <th>Price</th>
                                 <th>Scheduled</th>
                                 <th>Destination</th>
                                 <th>Company</th>
-                                <th>Actions</th>
-                                <th></th>
+                                <th colSpan={3}>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {this.renderLines()}
                         </tbody>
                 </Table>
-                    <div>
-                        <Button disabled={this.state.pageNo==0} className="btn btn-primary" onClick={() =>this.getLines(this.state.pageNo = this.state.pageNo - 1)}>Previous</Button>
-                        <Button disabled={this.state.pageNo==this.state.totalPages-1} className="btn btn-primary" onClick={() =>this.getLines(this.state.pageNo = this.state.pageNo + 1)}>Next</Button>
-                    </div>
                 </div>    
             </div>
         )
