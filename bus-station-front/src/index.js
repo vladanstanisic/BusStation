@@ -8,6 +8,7 @@ import {logout} from './services/auth';
 import Login from './components/login/Login';
 import Line from './components/line/Line';
 import AddLine from './components/line/AddLine';
+import EditLine from './components/line/EditLine';
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import thunk from 'redux-thunk';
@@ -36,6 +37,7 @@ class App extends React.Component{
                             <Route exact path="/" component={Home} />
                             <Route exact path="/lines" component={Line} />
                             <Route exact path="/lines/add" component={AddLine}/>
+                            <Route exact path="/lines/edit/:id" component={EditLine} />
                             <Route exact path="/login" component={Login}/>
                     </Switch>
                     </Container>
